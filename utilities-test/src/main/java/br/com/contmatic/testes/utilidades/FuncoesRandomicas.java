@@ -1,4 +1,4 @@
-package br.com.contmatic.utilidades;
+package br.com.contmatic.testes.utilidades;
 
 import org.apache.commons.lang3.RandomUtils;
 

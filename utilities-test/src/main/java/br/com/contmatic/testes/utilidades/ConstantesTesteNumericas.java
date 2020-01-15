@@ -1,4 +1,4 @@
-package br.com.contmatic.utilidades;
+package br.com.contmatic.testes.utilidades;
 
 /**
  * The Class ConstantesTesteNumericas.

@@ -1,4 +1,4 @@
-package br.com.contmatic.utilidades;
+package br.com.contmatic.testes.utilidades;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
