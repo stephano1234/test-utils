@@ -19,6 +19,11 @@ public class ProxyClassTeste {
 		proxyInstance.entrySet();
 		//proxyInstance.isEmpty();
 		//proxyInstance.putAll(proxyInstance);
+		
+		System.out.println(FuncoesRandomicas.generateStringBySize(5));
+		System.out.println(FuncoesRandomicas.generateStringBySizeAndRegex(5, "[A-Z]"));
+		System.out.println(FuncoesRandomicas.generateStringBySizeAndRegexWithOneCharByRegex(5, "\\d", "\\w"));
+		System.out.println(FuncoesRandomicas.generateStringBySizeAndRegexWithSeparator(5, "[A-Z]", " "));
 	}
 
 }
