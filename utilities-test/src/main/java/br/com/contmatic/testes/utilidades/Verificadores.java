@@ -39,7 +39,7 @@ public class Verificadores {
 	private static ValidatorFactory factory;
 
 	/** The logger. */
-	private static Logger logger = Logger.getGlobal();
+	private static final Logger logger = Logger.getLogger(Verificadores.class.getName());
 
 	/**
 	 * Instantiates a new verificadores.
@@ -54,16 +54,18 @@ public class Verificadores {
 	 * @param mensagem      the mensagem
 	 * @return true, if successful
 	 */
-	public static boolean verificaErro(Object objetoTestado, String mensagem) {
+	public static boolean procuraViolacao(Object objetoTestado, String mensagem, Class<?> groupClass) {
 		Preconditions.checkNotNull(objetoTestado, PARAM_NULO);
 		Preconditions.checkNotNull(mensagem, MENSAGEM_ERRO_NAO_INFORMADA);
 		factory = Validation.buildDefaultValidatorFactory();
 		validator = factory.getValidator();
 		boolean possuiErro = false;
-		Set<ConstraintViolation<Object>> violacoes = validator.validate(objetoTestado);
+		Set<ConstraintViolation<Object>> violacoes = validator.validate(objetoTestado, groupClass);
 		for (ConstraintViolation<Object> violacao : violacoes) {
-			if (violacao.getMessageTemplate().equals(mensagem)) {
+			if (violacao.getMessage().equals(mensagem)) {
 				possuiErro = true;
+				logger.log(Level.SEVERE, "{0}", objetoTestado);
+				logger.log(Level.SEVERE, mensagem);
 			}
 		}
 		return possuiErro;
@@ -75,12 +77,21 @@ public class Verificadores {
 	 * @param objetoTestado the objeto testado
 	 * @return true, if successful
 	 */
-	public static boolean procuraAlgumErro(Object objetoTestado) {
+	public static boolean procuraQualquerViolacao(Object objetoTestado, Class<?> groupClass) {
 		Preconditions.checkNotNull(objetoTestado, PARAM_NULO);
 		factory = Validation.buildDefaultValidatorFactory();
 		validator = factory.getValidator();
-		Set<ConstraintViolation<Object>> violacoes = validator.validate(objetoTestado);
-		return !violacoes.isEmpty();
+		Set<ConstraintViolation<Object>> violacoes = validator.validate(objetoTestado, groupClass);
+		if (!violacoes.isEmpty()) {
+			logger.log(Level.SEVERE, "{0}", objetoTestado);
+			for (ConstraintViolation<Object> violacao : violacoes) {
+				logger.log(Level.SEVERE, violacao.getMessage());
+			}
+			return true;
+		} else {
+			return false;
+		}
+		
 	}
 
 	/**
