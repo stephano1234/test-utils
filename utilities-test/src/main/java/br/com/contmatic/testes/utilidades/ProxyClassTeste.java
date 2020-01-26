@@ -5,6 +5,8 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.Map;
 
+import org.apache.commons.lang3.RandomUtils;
+
 public class ProxyClassTeste {
 	
 	public static void main(String[] args) {
@@ -22,8 +24,10 @@ public class ProxyClassTeste {
 		
 		System.out.println(FuncoesRandomicas.generateStringBySize(5));
 		System.out.println(FuncoesRandomicas.generateStringBySizeAndRegex(5, "[A-Z]"));
-		System.out.println(FuncoesRandomicas.generateStringBySizeAndRegexWithOneCharByRegex(5, "\\d", "\\w"));
-		System.out.println(FuncoesRandomicas.generateStringBySizeAndRegexWithSeparator(5, "[A-Z]", " "));
+		System.out.println(FuncoesRandomicas.generateStringBySizeAndRegexWithOneCharByRegex(5, "\\d", "[A-Z]"));
+		for (int i = 0; i < 1000; i++) {
+			System.out.println(FuncoesRandomicas.generateStringBySizeAndRegexWithSeparator(100, "[A-Z]", " "));			
+		}
 	}
 
 }

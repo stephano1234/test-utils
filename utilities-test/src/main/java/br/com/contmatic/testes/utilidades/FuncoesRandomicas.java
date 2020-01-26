@@ -19,11 +19,11 @@ public class FuncoesRandomicas {
 	 */
 	private FuncoesRandomicas() {
 	}
-	
+
 	/**
 	 * Somente caractere.
 	 *
-	 * @param tamanho the tamanho
+	 * @param tamanho          the tamanho
 	 * @param expressaoRegular the expressao regular
 	 * @return the string
 	 */
@@ -37,19 +37,32 @@ public class FuncoesRandomicas {
 	/**
 	 * Generate string by size and regex with separator.
 	 *
-	 * @param tamanho the tamanho
+	 * @param tamanho          the tamanho
 	 * @param expressaoRegular the expressao regular
-	 * @param separador the separador
+	 * @param separador        the separador
 	 * @return the string
 	 */
-	public static String generateStringBySizeAndRegexWithSeparator(int tamanho, String expressaoRegular, String separador) {
-		final StringBuilder string = new StringBuilder(generateStringBySizeAndRegex(tamanho, expressaoRegular));
-		final Set<Integer> posicoesSeparadores = new HashSet<>();
-		final int quantidadeSeparadores = RandomUtils.nextInt(0, tamanho);
-		while (posicoesSeparadores.size() < quantidadeSeparadores) {
-			posicoesSeparadores.add(RandomUtils.nextInt(1, tamanho));
+	public static String generateStringBySizeAndRegexWithSeparator(int tamanho, String expressaoRegular,
+			String separador) {
+		Preconditions.checkArgument(tamanho >= 1, "O tamanho da string gerada deve ser maior ou igual à um.");
+		Preconditions.checkNotNull(expressaoRegular, "A expressão regular deve ser informada.");
+		Preconditions.checkNotNull(separador, "O separador deve ser informado.");
+		Preconditions.checkArgument(tamanho >= separador.length(),
+				"O tamanho da string gerada deve ser maior ou igual ao tamanho do separador.");
+		Preconditions.checkArgument(separador.length() >= 1, "O tamanho do separador deve ser maior ou igual a um.");
+		int tamanhoSeparador = separador.length();
+		if (tamanho == tamanhoSeparador || tamanho == tamanhoSeparador + 1) {
+			return generateStringBySizeAndRegex(tamanho, expressaoRegular);
 		}
-		final Integer[] posicoesOrdenadasSeparadores = posicoesSeparadores.toArray(new Integer[0]);
+		int quantidadeSeparadores = RandomUtils.nextInt(0, (tamanho / (tamanhoSeparador + 1)) + 1);
+		quantidadeSeparadores = tamanho % 2 == 0 && quantidadeSeparadores != 0 ? quantidadeSeparadores - 1 : quantidadeSeparadores;
+		StringBuilder string = new StringBuilder(
+				generateStringBySizeAndRegex(tamanho - (quantidadeSeparadores * tamanhoSeparador), expressaoRegular));
+		Set<Integer> posicoesSeparadores = new HashSet<>();
+		while (posicoesSeparadores.size() < quantidadeSeparadores) {
+			posicoesSeparadores.add(RandomUtils.nextInt(1, string.length()));
+		}
+		Integer[] posicoesOrdenadasSeparadores = posicoesSeparadores.toArray(new Integer[0]);
 		Arrays.sort(posicoesOrdenadasSeparadores);
 		for (int i = posicoesOrdenadasSeparadores.length - 1; i >= 0; i--) {
 			string.insert(posicoesOrdenadasSeparadores[i], separador);
@@ -60,18 +73,19 @@ public class FuncoesRandomicas {
 	/**
 	 * Apenas um caractere.
 	 *
-	 * @param tamanho the tamanho
-	 * @param regexCaractere the regex caractere
+	 * @param tamanho         the tamanho
+	 * @param regexCaractere  the regex caractere
 	 * @param regexCaracteres the regex caracteres
 	 * @return the string
 	 */
-	public static String generateStringBySizeAndRegexWithOneCharByRegex(int tamanho, String regexCaractere, String regexCaracteres) {
-		Preconditions.checkArgument(tamanho >= 1,
-				"O tamanho da string gerada por apenasUmCaractere deve ser maior ou igual a um.");
+	public static String generateStringBySizeAndRegexWithOneCharByRegex(int tamanho, String regexCaractere,
+			String regexCaracteres) {
+		Preconditions.checkArgument(tamanho >= 1, "O tamanho da string gerada deve ser maior ou igual a um.");
 		Preconditions.checkNotNull(regexCaractere, "A expressão regular do caractere único deve ser informada.");
 		Preconditions.checkNotNull(regexCaracteres, "A expressão regular dos outros caracteres deve ser informada.");
 		int posicaoCaractere = RandomUtils.nextInt(0, tamanho);
-		return generateStringBySizeAndRegex(posicaoCaractere, regexCaracteres) + generateStringBySizeAndRegex(1, regexCaractere)
+		return generateStringBySizeAndRegex(posicaoCaractere, regexCaracteres)
+				+ generateStringBySizeAndRegex(1, regexCaractere)
 				+ generateStringBySizeAndRegex((tamanho - 1) - posicaoCaractere, regexCaracteres);
 	}
 
@@ -87,16 +101,17 @@ public class FuncoesRandomicas {
 	public static String emailAleatorio() {
 		StringBuilder emailRandom = new StringBuilder();
 		emailRandom.append(generateStringBySizeAndRegex(1, ConstantesTesteString.LETRA_MINUSCULA_NUMERAL));
-		emailRandom.append(generateStringBySizeAndRegex(RandomUtils.nextInt(ConstantesTesteNumericas.INCLUI_STRING_VAZIO, 29 + 1),
-				"([a-z]|[0-9]|[\\.]|[_]|[-])"));
+		emailRandom.append(
+				generateStringBySizeAndRegex(RandomUtils.nextInt(ConstantesTesteNumericas.INCLUI_STRING_VAZIO, 29 + 1),
+						"([a-z]|[0-9]|[\\.]|[_]|[-])"));
 		if (emailRandom.substring(emailRandom.length() - 1, emailRandom.length()).matches("[-_\\.]")) {
 			emailRandom.deleteCharAt(emailRandom.length() - 1);
 			emailRandom.append(generateStringBySizeAndRegex(1, ConstantesTesteString.LETRA_MINUSCULA_NUMERAL));
 		}
 		emailRandom.append("@");
 		emailRandom.append(generateStringBySizeAndRegex(1, ConstantesTesteString.LETRA_MINUSCULA_NUMERAL));
-		emailRandom.append(generateStringBySizeAndRegex(RandomUtils.nextInt(ConstantesTesteNumericas.INCLUI_STRING_VAZIO, 19 + 1),
-				"([a-z]|[0-9]|[\\.]|[-])"));
+		emailRandom.append(generateStringBySizeAndRegex(
+				RandomUtils.nextInt(ConstantesTesteNumericas.INCLUI_STRING_VAZIO, 19 + 1), "([a-z]|[0-9]|[\\.]|[-])"));
 		if (emailRandom.substring(emailRandom.length() - 1, emailRandom.length()).matches("[-_\\.]")) {
 			emailRandom.deleteCharAt(emailRandom.length() - 1);
 			emailRandom.append(generateStringBySizeAndRegex(1, ConstantesTesteString.LETRA_MINUSCULA_NUMERAL));

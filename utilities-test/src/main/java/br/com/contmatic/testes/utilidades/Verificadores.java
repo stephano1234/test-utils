@@ -88,10 +88,8 @@ public class Verificadores {
 				logger.log(Level.SEVERE, violacao.getMessage());
 			}
 			return true;
-		} else {
-			return false;
 		}
-		
+		return false;
 	}
 
 	/**
