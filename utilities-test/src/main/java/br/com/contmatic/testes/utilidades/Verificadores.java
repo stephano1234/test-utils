@@ -158,6 +158,8 @@ public class Verificadores {
 		tabelaAcentos.put("ô", "\\u00F4");
 		tabelaAcentos.put("Ã", "\\u00C3");
 		tabelaAcentos.put("ã", "\\u00E3");
+		tabelaAcentos.put("À", "\\u00C0");
+		tabelaAcentos.put("à", "\\u00E0");
 		tabelaAcentos.put("Õ", "\\u00D5");
 		tabelaAcentos.put("õ", "\\u00F5");
 		tabelaAcentos.put("ª", "\\u00AA");
