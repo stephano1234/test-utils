@@ -104,38 +104,27 @@ public class Verificadores {
 		Field[] campos = objetoTestado.getClass().getDeclaredFields();
 		for (Field campo : campos) {
 			campo.setAccessible(true);
-			formatoEsperado
-			.append("\"")
-			.append(campo.getName())
-			.append("\":");
+			formatoEsperado.append("\"").append(campo.getName()).append("\":");
 			try {
-				if (campo.get(objetoTestado).getClass().isEnum()) {
-					formatoEsperado
-					.append("\"")
-					.append(transformaCaractereEmUnicode(campo.get(objetoTestado)
-							.getClass()
-							.getSuperclass()
-							.getMethod("name")
-							.invoke(campo.get(objetoTestado)).toString()))
-					.append("\",");
-				} else {
-					if (campo.get(objetoTestado).toString().charAt(0) == '{'
-							|| campo.get(objetoTestado).toString().charAt(0) == '[') {
+				if (campo.get(objetoTestado) != null) {
+					if (campo.get(objetoTestado).getClass().isEnum()) {
 						formatoEsperado
-						.append(transformaCaractereEmUnicode(campo.get(objetoTestado).toString()))
-						.append(",");
+								.append("\"").append(transformaCaractereEmUnicode(campo.get(objetoTestado).getClass()
+										.getSuperclass().getMethod("name").invoke(campo.get(objetoTestado)).toString()))
+								.append("\",");
 					} else {
-						if (campo.get(objetoTestado) != null) {
-							formatoEsperado
-							.append("\"")
-							.append(transformaCaractereEmUnicode(campo.get(objetoTestado).toString()))
-							.append("\",");							
+						if (campo.get(objetoTestado).toString().charAt(0) == '{'
+								|| campo.get(objetoTestado).toString().charAt(0) == '[') {
+							formatoEsperado.append(transformaCaractereEmUnicode(campo.get(objetoTestado).toString()))
+									.append(",");
 						} else {
-							formatoEsperado
-							.append("null")
-							.append(",");
+							formatoEsperado.append("\"")
+									.append(transformaCaractereEmUnicode(campo.get(objetoTestado).toString()))
+									.append("\",");
 						}
 					}
+				} else {
+					formatoEsperado.append("null").append(",");					
 				}
 			} catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException
 					| NoSuchMethodException | SecurityException e) {
@@ -290,7 +279,7 @@ public class Verificadores {
 
 	private static Object classeNewer(Class<?> classe) {
 		if (classe.isInterface()) {
-			return classe.cast(Proxy.newProxyInstance(null, new Class[] {classe}, new InvocationHandler() {
+			return classe.cast(Proxy.newProxyInstance(null, new Class[] { classe }, new InvocationHandler() {
 				@Override
 				public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 					return null;
@@ -359,7 +348,7 @@ public class Verificadores {
 
 	private static void geraValoresCamposPrimitivos(Object[] valores, int i, Class<?> classeCampo) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	private static void geraValoresCamposEnum(Object[] valores, int i, Class<?> classeCampo) {
