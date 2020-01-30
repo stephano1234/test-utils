@@ -98,6 +98,7 @@ public class Verificadores {
 	 * @param objetoTestado the objeto testado
 	 * @return true, if successful
 	 */
+	@Deprecated
 	public static boolean verificaToStringJSONSTYLE(Object objetoTestado) {
 		Preconditions.checkNotNull(objetoTestado, PARAM_NULO);
 		StringBuilder formatoEsperado = new StringBuilder("{");
@@ -143,6 +144,7 @@ public class Verificadores {
 	 * @param string the string
 	 * @return the string
 	 */
+	@Deprecated
 	public static String transformaCaractereEmUnicode(String string) {
 		String letrasAcentuadas = "ÁáÉéÍíÓóÚúÀàÂâÊêÔôÃãÕõªºçÇ";
 		Map<String, String> tabelaAcentos = new LinkedHashMap<>();
@@ -182,8 +184,8 @@ public class Verificadores {
 			}
 		}
 		return stringTransformada.toString();
-	}
-
+	}	
+	
 	/**
 	 * Verifica construtor.
 	 *
