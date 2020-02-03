@@ -64,8 +64,6 @@ public class Verificadores {
 		for (ConstraintViolation<Object> violacao : violacoes) {
 			if (violacao.getMessage().equals(mensagem)) {
 				possuiErro = true;
-				logger.log(Level.SEVERE, "{0}", objetoTestado);
-				logger.log(Level.SEVERE, mensagem);
 			}
 		}
 		return possuiErro;
@@ -82,14 +80,7 @@ public class Verificadores {
 		factory = Validation.buildDefaultValidatorFactory();
 		validator = factory.getValidator();
 		Set<ConstraintViolation<Object>> violacoes = validator.validate(objetoTestado, groupClass);
-		if (!violacoes.isEmpty()) {
-			logger.log(Level.SEVERE, "{0}", objetoTestado);
-			for (ConstraintViolation<Object> violacao : violacoes) {
-				logger.log(Level.SEVERE, violacao.getMessage());
-			}
-			return true;
-		}
-		return false;
+		return !violacoes.isEmpty();
 	}
 
 	/**
